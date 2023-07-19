@@ -9,6 +9,32 @@ const char TREE_ID[] = "T";
 const char WOLF_ID[] = "W";
 const char RABBIT_ID[] = "R";
 
+int nearBy(COORD a, COORD b) {
+    if(samePosition(a, b) == 1) {
+        return 1;
+    }
+
+    if(a.X == b.X + 1 && a.Y == b.Y) return 1;
+    if(a.X == b.X + 1 && a.Y == b.Y + 1) return 1;
+    if(a.X == b.X && a.Y == b.Y + 1) return 1;
+    if(a.X == b.X - 1 && a.Y == b.Y + 1) return 1;
+    if(a.X == b.X - 1 && a.Y == b.Y) return 1;
+    if(a.X == b.X - 1 && a.Y == b.Y - 1) return 1;
+    if(a.X == b.X && a.Y == b.Y - 1) return 1;
+    if(a.X == b.X + 1 && a.Y == b.Y - 1) return 1;
+
+    return 0;
+}
+
+int samePosition(COORD a, COORD b) {
+    if(a.X == b.X && a.Y == b.Y) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
 int isCoordPresent(COORD* array, int size, COORD value) {
     for (int i = 0; i < size; i++) {
         if (array[i].X == value.X && array[i].Y == value.Y) {
@@ -87,8 +113,10 @@ void moveRabbitTo(Rabbit* animal, COORD newPosition, Tree* trees, size_t treeSiz
     printf(RABBIT_ID);
 }
 
-void moveWolfTo(Wolf* animal, COORD newPosition, Tree* trees, size_t treeSize) {
+void moveWolfTo(Wolf* wolf, COORD newPosition, Tree* trees, size_t treeSize) {
     int collision = 0;
+    wolf->hunger++;
+    
     for (size_t i = 0; i < treeSize; i++)
     {
         if(newPosition.X == trees[i].position.X && newPosition.Y == trees[i].position.Y) {
@@ -98,16 +126,16 @@ void moveWolfTo(Wolf* animal, COORD newPosition, Tree* trees, size_t treeSize) {
     }
 
     if(collision) {
-        // do not move animal if collides with a tree
+        // do not move wolf if collides with a tree
         return;
     }
     
     
-    move(animal->position.X, animal->position.Y);
+    move(wolf->position.X, wolf->position.Y);
     printf(" ");
-    animal->position.X = newPosition.X;
-    animal->position.Y = newPosition.Y;
-    move(animal->position.X, animal->position.Y);
+    wolf->position.X = newPosition.X;
+    wolf->position.Y = newPosition.Y;
+    move(wolf->position.X, wolf->position.Y);
     colorRed();
     printf(WOLF_ID);
 }

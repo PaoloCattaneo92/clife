@@ -13,12 +13,14 @@ MAIN_SRC := $(SRC_DIR)/main.c
 MAP_SRC := $(SRC_DIR)/map.c
 CONSOLE_HELP_SRC := $(SRC_DIR)/console_help.c
 MODEL_SRC := $(SRC_DIR)/model.c
+LOG_SRC := $(SRC_DIR)/log.c
 
 # Object files
 MAIN_OBJ := $(BUILD_DIR)/main.o
 MAP_OBJ := $(BUILD_DIR)/map.o
 CONSOLE_HELP_OBJ := $(BUILD_DIR)/console_help.o
 MODEL_OBJ := $(BUILD_DIR)/model.o
+LOG_OBJ := $(BUILD_DIR)/log.o
 
 # Targets
 TARGET := clife
@@ -28,7 +30,7 @@ all: $(TARGET)
 $(TARGET): $(MAIN_OBJ) $(MAP_OBJ) $(CONSOLE_HELP_OBJ)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-$(MAIN_OBJ): $(MAIN_SRC) $(INCLUDE_DIR)/map.h $(INCLUDE_DIR)/model.h
+$(MAIN_OBJ): $(MAIN_SRC) $(INCLUDE_DIR)/map.h $(INCLUDE_DIR)/model.h $(INCLUDE_DIR)/log.h  
 	$(CC) $(CFLAGS) -c $< -I$(INCLUDE_DIR) -o $@
 
 $(MAP_OBJ): $(MAP_SRC) $(INCLUDE_DIR)/map.h $(INCLUDE_DIR)/console_help.h $(INCLUDE_DIR)/model.h

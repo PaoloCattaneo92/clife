@@ -11,6 +11,7 @@ typedef struct Rabbit {
 typedef struct Wolf {
     int id;
     COORD position;
+    int hunger;
 } Wolf;
 
 typedef struct Tree {
