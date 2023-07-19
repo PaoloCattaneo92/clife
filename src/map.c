@@ -6,7 +6,29 @@
 const int MAP_WIDTH = 30;
 const int MAP_HEIGHT = 10;
 const char TREE_ID[] = "T";
-const char ANIMAL_ID[] = "V";
+const char WOLF_ID[] = "W";
+
+int isCoordPresent(COORD* array, int size, COORD value) {
+    for (int i = 0; i < size; i++) {
+        if (array[i].X == value.X && array[i].Y == value.Y) {
+            return 1; // Value is present in the array
+        }
+    }
+    return 0; // Value is not present in the array
+}
+
+void randomizeNPositions(COORD* coords, int size) {
+    for (int i = 0; i < size; i++) {
+        COORD randomCoord;
+        do {
+            randomCoord.X = (rand() % (MAP_WIDTH -2)) + 1;
+            randomCoord.Y = (rand() % (MAP_HEIGHT -2)) + 1;
+        } while (isCoordPresent(coords, i, randomCoord));
+
+        coords[i] = randomCoord;
+    }
+}
+
 
 COORD randomizeNextPosition(short x, short y) {
     int randomDirection = rand() % 8; // Generate a random number between 0 and 7
@@ -61,7 +83,7 @@ void moveAnimalTo(Animal* animal, COORD newPosition, Tree* trees, size_t treeSiz
     animal->position.Y = newPosition.Y;
     move(animal->position.X, animal->position.Y);
     colorRed();
-    printf(ANIMAL_ID);
+    printf(WOLF_ID);
 }
 
 void printTrees(Tree trees[], size_t size) {
@@ -80,7 +102,7 @@ void printAnimals(Animal animals[], size_t size) {
         Animal animal = animals[i];
         move(animal.position.X, animal.position.Y);
         colorRed();
-        printf(ANIMAL_ID);
+        printf(WOLF_ID);
     }
 }
 

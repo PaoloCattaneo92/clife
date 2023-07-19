@@ -7,41 +7,54 @@
 #include <time.h>
 
 const unsigned int GAME_TICK = 250 * 1000; //ms * 1000 => microseconds 
+const int WOLF_COUNT = 3;
+const int TREE_COUNT = 3;
 
-Animal animals[] = {
-    {1, {2, 3} },
-    {2, {5, 1} },
-    {3, {6, 8} }
-};
-
-Tree trees[] = {
-    {1, {6, 7} },
-    {2, {1, 4} },
-    {3, {10, 8} }
-    };
+Animal* animals;
+Tree* trees;
 
 void gameStep() {
-    size_t animalSize = sizeof(animals) / sizeof(animals[0]);
-    size_t treeSize = sizeof(trees) / sizeof(trees[0]);
-
-    for (size_t i = 0; i < animalSize; i++)
+    for (int i = 0; i < WOLF_COUNT; i++)
     {
         short x = animals[i].position.X;
         short y = animals[i].position.Y;
-        moveAnimalTo(&animals[i], randomizeNextPosition(x, y), trees, treeSize);
+        moveAnimalTo(&animals[i], randomizeNextPosition(x, y), trees, TREE_COUNT);
     }
+}
+
+void prepareData() {
+    animals = (Animal*)malloc(WOLF_COUNT * sizeof(Animal));
+    trees = (Tree*)malloc(TREE_COUNT * sizeof(Tree));
+
+    COORD* coords = (COORD*)malloc((WOLF_COUNT+TREE_COUNT) * sizeof(COORD));
+    randomizeNPositions(coords, WOLF_COUNT+TREE_COUNT);
+    
+    int j = 0;
+    for(int i = 0; i< WOLF_COUNT; i++) {
+        animals[i].id = i+1;
+        animals[i].position.X = coords[j].X;
+        animals[i].position.Y = coords[j].Y;
+        j++;
+    }
+
+    for(int i = 0; i< TREE_COUNT; i++) {
+        trees[i].id = i+1;
+        trees[i].position.X = coords[j].X;
+        trees[i].position.Y = coords[j].Y;
+        j++;
+    }
+    free(coords);
 }
 
 int main() {
     srand(time(NULL));
 
+    prepareData();
+
     printMapBorders();
 
-    size_t size = sizeof(trees) / sizeof(trees[0]);
-    printTrees(trees, size);
-
-    size = sizeof(animals) / sizeof(animals[0]);
-    printAnimals(animals, size);
+    printTrees(trees, TREE_COUNT);
+    printAnimals(animals, WOLF_COUNT);
 
     while(1) {
         gameStep();
