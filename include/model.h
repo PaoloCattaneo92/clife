@@ -3,10 +3,15 @@
 
 #include <windows.h>
 
-typedef struct Animal {
+typedef struct Rabbit {
     int id;
     COORD position;
-} Animal;
+} Rabbit;
+
+typedef struct Wolf {
+    int id;
+    COORD position;
+} Wolf;
 
 typedef struct Tree {
     int id;

@@ -7,6 +7,7 @@ const int MAP_WIDTH = 30;
 const int MAP_HEIGHT = 10;
 const char TREE_ID[] = "T";
 const char WOLF_ID[] = "W";
+const char RABBIT_ID[] = "R";
 
 int isCoordPresent(COORD* array, int size, COORD value) {
     for (int i = 0; i < size; i++) {
@@ -61,7 +62,32 @@ COORD randomizeNextPosition(short x, short y) {
     return result;
 }
 
-void moveAnimalTo(Animal* animal, COORD newPosition, Tree* trees, size_t treeSize) {
+void moveRabbitTo(Rabbit* animal, COORD newPosition, Tree* trees, size_t treeSize) {
+    int collision = 0;
+    for (size_t i = 0; i < treeSize; i++)
+    {
+        if(newPosition.X == trees[i].position.X && newPosition.Y == trees[i].position.Y) {
+            collision = 1;
+            break;
+        }
+    }
+
+    if(collision) {
+        // do not move animal if collides with a tree
+        return;
+    }
+    
+    
+    move(animal->position.X, animal->position.Y);
+    printf(" ");
+    animal->position.X = newPosition.X;
+    animal->position.Y = newPosition.Y;
+    move(animal->position.X, animal->position.Y);
+    colorBlue();
+    printf(RABBIT_ID);
+}
+
+void moveWolfTo(Wolf* animal, COORD newPosition, Tree* trees, size_t treeSize) {
     int collision = 0;
     for (size_t i = 0; i < treeSize; i++)
     {
@@ -96,10 +122,10 @@ void printTrees(Tree trees[], size_t size) {
     }
 }
 
-void printAnimals(Animal animals[], size_t size) {
+void printAnimals(Wolf animals[], size_t size) {
     for (size_t i = 0; i < size; i++)
     {
-        Animal animal = animals[i];
+        Wolf animal = animals[i];
         move(animal.position.X, animal.position.Y);
         colorRed();
         printf(WOLF_ID);
